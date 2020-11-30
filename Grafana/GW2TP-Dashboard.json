@@ -19,6 +19,69 @@
   "links": [],
   "panels": [
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                2150
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "B",
+                "10s",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          },
+          {
+            "evaluator": {
+              "params": [
+                1900
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "or"
+            },
+            "query": {
+              "params": [
+                "A",
+                "10s",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "0",
+        "frequency": "1s",
+        "handler": 1,
+        "message": "Time to sell those Ectos! :D",
+        "name": "Ecto Alerts",
+        "noDataState": "keep_state",
+        "notifications": [
+          {
+            "uid": "RfUgj20Gz"
+          }
+        ]
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -41,13 +104,17 @@
       "hiddenSeries": false,
       "id": 4,
       "legend": {
+        "alignAsTable": false,
         "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -67,11 +134,19 @@
       "targets": [
         {
           "format": "time_series",
-          "group": [],
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
           "metricColumn": "none",
           "queryType": "randomWalk",
           "rawQuery": false,
-          "rawSql": "SELECT\n  date AS \"time\",\n  buy\nFROM ecto\nWHERE\n  $__timeFilter(date)\nORDER BY date",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(buy) AS \"buy\"\nFROM ecto\nWHERE\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY $__timeGroup(date,$__interval)",
           "refId": "A",
           "select": [
             [
@@ -80,6 +155,18 @@
                   "buy"
                 ],
                 "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "buy"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -96,10 +183,18 @@
         },
         {
           "format": "time_series",
-          "group": [],
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
           "metricColumn": "none",
           "rawQuery": false,
-          "rawSql": "SELECT\n  date AS \"time\",\n  sell\nFROM ecto\nWHERE\n  $__timeFilter(date)\nORDER BY date",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(sell) AS \"sell\"\nFROM ecto\nWHERE\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY $__timeGroup(date,$__interval)",
           "refId": "B",
           "select": [
             [
@@ -108,6 +203,18 @@
                   "sell"
                 ],
                 "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "sell"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -123,7 +230,15 @@
           ]
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 2150
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -143,6 +258,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:586",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -151,6 +267,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:587",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -311,6 +428,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -318,12 +436,12 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "GW2TP",
   "uid": "GqM4ydAMk",
-  "version": 4
+  "version": 13
 }
