@@ -28,9 +28,9 @@ It is needed to manually set up the desired threshold and alerts for any panel (
 
 To setup notifications on a Discord server, we need to create a new notification from Grafana, and use the webhook of the Discord server:
 
-[Notif](/pictures/notif.png)
+![Notif](/pictures/notif.png)
 
-[Webhook](/pictures/webhook.png)
+![Webhook](/pictures/webhook.png)
 
 To visualize on discord a picture of the graph when the alert is triggered, it is needed to install [Grafana Image Renderer Plugin](https://grafana.com/grafana/plugins/grafana-image-renderer)
 
