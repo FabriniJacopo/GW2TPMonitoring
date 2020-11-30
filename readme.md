@@ -6,13 +6,15 @@ Guild Wars 2 provide [APIs](https://wiki.guildwars2.com/wiki/API:Main) to retrie
 
 In particular, it is possible to retrieve buy and sell prices of any item in the Trading Post, the internal market entirely controlled by the players.
 
-There are already different tools that monitor the TP, like [GW2Spidy](https://www.gw2spidy.com/), but I wanted to create a home version of them while practicing with Python, Grafana and MySql.
+There are already different tools that monitor the TP, like [GW2Spidy](https://www.gw2spidy.com/), but I wanted to create a home version of them while practicing with Python, Grafana and MySQL.
 
 Moreover, through Grafana notification settings, I was able to put in place an alerting and notification system, that sends a notification on a personal Discord server any time an alert is triggered.
 
-This is the current schema of the project:
+**Architecture**
 
-![Schema](/schema.png)
+This is the current architecture of the project:
+
+![Schema](/pictures/schema.png)
 
 
 The "grafana" folder contains the json describing two monitoring panels and the alerts put in place in the "Glob of Ectoplasm" one.
@@ -21,8 +23,17 @@ The "ectoplasm" panel contains alerts to signal when it could be profitable to s
 
 It is needed to manually set up the desired threshold and alerts for any panel (any item) on Grafana.
 
-A firing alert will be notified over discord, through the use of a webhook, set through the notification settings of Grafana.
 
-The "python" folder contains the python code used to scrape the info from GW2 API and write it down in a local MySQL DataBase.
+**Discord Notification**
 
-![Dashboard](/dashboard.jpg)
+To setup notifications on a Discord server, we need to create a new notification from Grafana, and use the webhook of the Discord server:
+
+[Notif](/pictures/notif.png)
+
+[Webhook](/pictures/webhook.png)
+
+To visualize on discord a picture of the graph when the alert is triggered, it is needed to install [Grafana Image Renderer Plugin](https://grafana.com/grafana/plugins/grafana-image-renderer)
+
+In this way the notification on Discord will be like this one:
+
+![DiscordNotification](/pictures/discordnotif.png)
